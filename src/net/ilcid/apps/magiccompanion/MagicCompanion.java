@@ -98,18 +98,6 @@ public class MagicCompanion extends Activity {
 					dismissDialog(DIALOG_SEARCH);
 				}
 			});
-			searchQuery.setOnEditorActionListener(new TextView.OnEditorActionListener() 
-			{	
-				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) 
-				{
-					if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
-					{
-						searchButton.performClick();
-						return true;
-					}
-					return false;
-				}
-			});
 			break;
 		case DIALOG_ADD_LIFE:
 			dialog = new Dialog(this);
@@ -117,6 +105,7 @@ public class MagicCompanion extends Activity {
 			dialog.setTitle(res.getString(R.string.dialog_add_life));
 			final Button addButton = (Button) dialog.findViewById(R.id.dialog_add_life_button);
 			final EditText addField = (EditText) dialog.findViewById(R.id.dialog_add_life_amount);
+			addField.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
 			addButton.setOnClickListener(new View.OnClickListener()
 			{
 				public void onClick(View v)
@@ -136,18 +125,6 @@ public class MagicCompanion extends Activity {
 					}
 				}
 			});
-			addField.setOnEditorActionListener(new TextView.OnEditorActionListener()
-			{
-				public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
-				{
-					if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
-					{
-						addButton.performClick();
-						return true;
-					}
-					return false;
-				}
-			});
 			break;
 		case DIALOG_SUBTRACT_LIFE:
 			dialog = new Dialog(this);
@@ -155,6 +132,7 @@ public class MagicCompanion extends Activity {
 			dialog.setTitle(res.getString(R.string.dialog_subtract_life));
 			final Button subtractButton = (Button) dialog.findViewById(R.id.dialog_subtract_life_button);
 			final EditText subtractField = (EditText) dialog.findViewById(R.id.dialog_subtract_life_amount);
+			subtractField.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
 			subtractButton.setOnClickListener(new View.OnClickListener()
 			{
 				public void onClick(View v) 
@@ -175,18 +153,6 @@ public class MagicCompanion extends Activity {
 					
 				}
 			});
-			subtractField.setOnEditorActionListener(new TextView.OnEditorActionListener()
-			{		
-				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) 
-				{
-					if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
-					{
-						subtractButton.performClick();
-						return true;
-					}
-					return false;
-				}
-			});
 			break;
 		case DIALOG_SET_LIFE:
 			dialog = new Dialog(this);
@@ -194,6 +160,7 @@ public class MagicCompanion extends Activity {
 			dialog.setTitle(res.getString(R.string.dialog_set_life));
 			final Button setButton = (Button) dialog.findViewById(R.id.dialog_set_life_button);
 			final EditText setField = (EditText) dialog.findViewById(R.id.dialog_set_life_amount);
+			setField.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
 			setButton.setOnClickListener(new View.OnClickListener()
 			{	
 				public void onClick(View v) 
@@ -211,18 +178,6 @@ public class MagicCompanion extends Activity {
 					{
 						dismissDialog(DIALOG_SET_LIFE);
 					}
-				}
-			});
-			setField.setOnEditorActionListener(new TextView.OnEditorActionListener() 
-			{	
-				public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
-				{
-					if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
-					{
-						setButton.performClick();
-						return true;
-					}
-					return false;
 				}
 			});
 		}
