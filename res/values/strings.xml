@@ -4,7 +4,7 @@
     <string name="app_name">Magic Companion</string>
     <string name="main_activity_title">Game</string>
     <string name="players_activity_title">Players</string>
-    <string name="search_activity_title">Players</string>
+    <string name="cardsearch_activity_title">Cards</string>
     <string name="default_value">0</string>
     <string name="poison_icon_description">Poison Counters</string>
     <string name="hp_icon_description">Health Level</string>

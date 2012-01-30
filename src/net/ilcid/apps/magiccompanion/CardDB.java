@@ -23,7 +23,7 @@ import android.graphics.BitmapFactory;
 import android.widget.Toast;
 
 public class CardDB {
-	public static final String KEY_SET = "set";
+	public static final String KEY_SET = "set_code";
 	public static final String KEY_NAME = "name";
 	public static final String KEY_SCAN = "scan";
 	public static final String KEY_TYPE = "card_type";
@@ -38,7 +38,7 @@ public class CardDB {
 	private static final String DATABASE_PATH = "/data/data/";
 	private static final String DATABASE_NAME = "cards.db";
 	private static final String DATABASE_TABLE = "cards";
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 2;
 	
 	private final Context mCtx;
 	private static boolean mReady;
@@ -64,9 +64,9 @@ public class CardDB {
 	private static boolean checkDb(Context c) {
 		SQLiteDatabase db = null;
 		try {
-			String path = DATABASE_PATH+c.getPackageName()+"/"+DATABASE_NAME;
-			db = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY);
+			db = SQLiteDatabase.openDatabase(c.getDatabasePath(DATABASE_NAME).getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
 		} catch (SQLiteException e) {
+			e.printStackTrace();
 		}
 		if(db != null) {
 			db.close();
@@ -74,11 +74,11 @@ public class CardDB {
 		return (db == null) ? true : false;
 	}
 	
-	private static void copyDb(final Context c) throws IOException {
+	private static void copyDb(final Context c, Observer o) throws IOException {
 		URL url;
 		url = new URL(DATABASE_URL);
 		Download dl = new Download(url, c.getApplicationContext().getDatabasePath(DATABASE_NAME));
-		
+		dl.addObserver(o);
 		dl.start();
 	}
 	
@@ -86,8 +86,8 @@ public class CardDB {
 		return checkDb(c);
 	}
 	
-	public static void Initialize(Context c) throws IOException {
-		copyDb(c);
+	public static void Initialize(Context c, Observer o) throws IOException {
+		copyDb(c, o);
 		mReady = checkDb(c);
 	}
 	
@@ -109,7 +109,10 @@ public class CardDB {
 		mDbHelper.close();
 	}
 	
-	public ArrayList<Card> getCardsByName(String qname) {
+	public ArrayList<Card> getCardsByName(String qname, int limit) {
+		if(mDb == null)
+			open();
+	
 		Cursor c = mDb.query(DATABASE_TABLE, new String [] {
 				KEY_SET,
 				KEY_NAME,
@@ -118,7 +121,8 @@ public class CardDB {
 				KEY_TYPE,
 				KEY_MECHANICS,
 				KEY_DESCRIPTION
-		}, KEY_NAME + " LIKE %" + qname + "%" , null, null, null, null);
+		}, KEY_NAME + " LIKE '%" + qname + "%'" , null, KEY_NAME, null, KEY_NAME + " LIMIT " + String.valueOf(limit));
+
 		ArrayList<Card> list = new ArrayList<Card>();
 		if(c != null) {
 			c.moveToFirst();

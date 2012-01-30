@@ -1,6 +1,8 @@
 package net.ilcid.apps.magiccompanion;
 
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -20,26 +23,17 @@ public class MTGCompanionActivity extends Activity {
 	
 	private Game pActiveGame;
 	
+	
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.main);
-        if(CardDB.needsInit(this))
-        {
-			try {
-				CardDB.Initialize(this);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				Toast.makeText(this, "IO Exception", 5000);
-				e.printStackTrace();
-			}
-        } else {
-        	Toast.makeText(this, "Database Found", 5000);
-        }
         
-		
+        
+        
         
         this.pActiveGame = Game.getInstance();
         this.pActiveGame.addPlayer("John Griffiths");
@@ -53,6 +47,12 @@ public class MTGCompanionActivity extends Activity {
     }
     
     @Override
+    public boolean onTouchEvent(MotionEvent event) {
+    	// TODO Auto-generated method stub
+    	return super.onTouchEvent(event);
+    }
+    
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	MenuInflater inflater = getMenuInflater();
     	inflater.inflate(R.menu.main, menu);
@@ -61,63 +61,18 @@ public class MTGCompanionActivity extends Activity {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+    	Intent i;
     	switch(item.getItemId()) {
     	case R.id.menu_players:
-    		Intent i = new Intent(this, ManagePlayersActivity.class);
+    		i = new Intent(this, ManagePlayersActivity.class);
     		startActivity(i);
     		return true;
+    	case R.id.menu_search:
+    		i = new Intent(this, CardSearchActivity.class);
+    		startActivity(i);
     	default: 
     		return super.onOptionsItemSelected(item);
     	}
-    	
-    }
-    
-    public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
-    	private final Activity mActivity;
-    	private final String mTag;
-    	private final Class<T> mClass;
-    	private final Bundle mArgs;
-    	private Fragment mFragment;
-    	
-    	public TabListener(Activity activity, String tag, Class<T> clz) {
-    		this(activity, tag, clz, null);
-    	}
-    	
-    	public TabListener(Activity activity, String tag, Class<T> clz, Bundle args) {
-    		mActivity = activity;
-    		mTag = tag;
-    		mClass = clz;
-    		mArgs = args;
-    		
-    		mFragment = mActivity.getFragmentManager().findFragmentByTag(mTag);
-    		if(mFragment != null && !mFragment.isDetached()) {
-    			FragmentTransaction ft = mActivity.getFragmentManager().beginTransaction();
-    			ft.detach(mFragment);
-    			ft.commit();
-    		}
-    	}
-    	
-		public void onTabReselected(Tab tab, FragmentTransaction ft) {
-			
-			
-		}
-
-		public void onTabSelected(Tab tab, FragmentTransaction ft) {
-			if(mFragment == null) {
-				mFragment = Fragment.instantiate(mActivity,  mClass.getName(), mArgs);
-				ft.add(android.R.id.content, mFragment, mTag);
-			} else {
-				ft.attach(mFragment);
-			}
-			
-		}
-
-		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-			if(mFragment != null) {
-				ft.detach(mFragment);
-			}
-			
-		}
     	
     }
 }

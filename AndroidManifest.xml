@@ -6,17 +6,31 @@
 
     <uses-sdk android:minSdkVersion="14" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name=".MTGCompanionActivity"
-            android:label="@string/main_activity_title" >
+            android:name=".CardSearchActivity"
+            android:label="@string/cardsearch_activity_title">
+            <intent-filter>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SplashActivity"
+            android:noHistory="true"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MTGCompanionActivity"
+            android:label="@string/main_activity_title" >
+            <intent-filter>
             </intent-filter>
         </activity>
         <activity

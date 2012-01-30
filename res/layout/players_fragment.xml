@@ -21,7 +21,7 @@
 	</LinearLayout>
 	<net.ilcid.apps.magiccompanion.PlayerListView
 	    android:id="@+id/players_list"
-	    android:layout_width="wrap_content"
+	    android:layout_width="fill_parent"
 	    android:layout_above="@id/button_layout"
 	    android:layout_height="wrap_content"/>
 </RelativeLayout>
