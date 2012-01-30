@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical" >
+	<LinearLayout android:id="@+id/button_layout"
+	    	android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+        	android:layout_alignParentBottom="true"
+		    android:orientation="horizontal">
+		<Button android:id="@+id/clear_button"
+		    android:layout_width="wrap_content"
+	    	android:layout_height="fill_parent"
+	    	android:gravity="left"
+	    	android:layout_weight="1"
+		    android:text="Clear"/>
+		<Button android:layout_width="wrap_content"
+		    android:layout_height="fill_parent"
+	    	android:gravity="right"
+	    	android:layout_weight="1"
+		    android:text="Create"/>
+	</LinearLayout>
+	<net.ilcid.apps.magiccompanion.PlayerListView
+	    android:id="@+id/players_list"
+	    android:layout_width="wrap_content"
+	    android:layout_above="@id/button_layout"
+	    android:layout_height="wrap_content"/>
+</RelativeLayout>

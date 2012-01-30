@@ -1,0 +1,34 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="128dip"
+android:padding="4dip">
+	<TextView android:id="@+id/hp_value"
+	    android:layout_width="wrap_content"
+	    android:layout_height="fill_parent"
+	    android:textSize="48sp"
+	    android:layout_marginRight="16dip"
+	    android:text="@string/default_value"
+	    android:drawableLeft="@drawable/hp_icon"/>
+	<LinearLayout android:orientation="vertical"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content">
+	    <TextView android:id="@+id/player_name"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:textSize="24sp"/>
+	   	<TextView android:id="@+id/poison_value"
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:textSize="24sp"
+	            android:text="@string/default_value"
+	            android:drawableLeft="@drawable/poison_icon"/>
+	</LinearLayout>
+	<Button android:id="@+id/garbage_icon"
+	    android:layout_width="0dip"
+	    android:layout_height="fill_parent"
+	    android:background="@android:drawable/ic_menu_delete"
+	    android:gravity="right"
+		android:layout_weight="1"
+	    android:visibility="invisible"/>
+</LinearLayout>
