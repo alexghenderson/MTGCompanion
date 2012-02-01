@@ -4,27 +4,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     
-	<TextView
-	    android:id="@+id/splash_download_progress"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentBottom="true"
-	    android:layout_centerHorizontal="true"
-	    android:layout_marginBottom="32dp"/>
-	
-	<ProgressBar style="@android:style/Widget.ProgressBar.Horizontal"
-	    android:id="@+id/splash_download_progressbar"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_above="@id/splash_download_progress"
-	    android:layout_centerHorizontal="true"
-	    android:visibility="invisible" />
-	
-	<TextView
-	    android:id="@+id/splash_download_status"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_above="@id/splash_download_progressbar"
-	    android:layout_centerHorizontal="true" />
+	
 
 </RelativeLayout>

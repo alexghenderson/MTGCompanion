@@ -3,6 +3,7 @@ package net.ilcid.apps.magiccompanion;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,16 @@ public class CardAdapter  extends ArrayAdapter<Card> {
 			typeView.setText(c.getType());
 			nameView.setText(c.getName());
 			setView.setText(c.getSet());
+			
+			v.setOnClickListener(new View.OnClickListener() {
+				
+				public void onClick(View v) {
+					Intent i = new Intent(getContext(), CardDetailsActivity.class);
+					i.putExtra("card_name", c.getName());
+					getContext().startActivity(i);
+					
+				}
+			});
 		}
 		return v;
 	}

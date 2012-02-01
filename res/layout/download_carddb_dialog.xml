@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center_vertical|center_horizontal">
+
+	    <!--style="@android:style/Widget.ProgressBar.Small" -->
+	<ProgressBar 
+	    style="?android:attr/progressBarStyleHorizontal"
+	    android:id="@+id/splash_download_progressbar"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1"
+	    android:gravity="center"/>
+	
+	<TextView
+	    android:id="@+id/splash_download_progress"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1"
+	    android:gravity="center"/>
+	
+</LinearLayout>

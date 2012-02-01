@@ -112,17 +112,16 @@ public class CardDB {
 	public ArrayList<Card> getCardsByName(String qname, int limit) {
 		if(mDb == null)
 			open();
-	
-		Cursor c = mDb.query(DATABASE_TABLE, new String [] {
-				KEY_SET,
-				KEY_NAME,
-				KEY_SCAN,
-				KEY_COST,
-				KEY_TYPE,
-				KEY_MECHANICS,
-				KEY_DESCRIPTION
-		}, KEY_NAME + " LIKE '%" + qname + "%'" , null, KEY_NAME, null, KEY_NAME + " LIMIT " + String.valueOf(limit));
-
+		Cursor c = null;
+			c = mDb.query(DATABASE_TABLE, new String [] {
+					KEY_SET,
+					KEY_NAME,
+					KEY_SCAN,
+					KEY_COST,
+					KEY_TYPE,
+					KEY_MECHANICS,
+					KEY_DESCRIPTION
+			}, KEY_NAME + " LIKE ?" ,  new String [] {"%"+qname+"%"}, KEY_NAME, null, KEY_NAME + " LIMIT " + String.valueOf(limit));
 		ArrayList<Card> list = new ArrayList<Card>();
 		if(c != null) {
 			c.moveToFirst();
@@ -139,6 +138,34 @@ public class CardDB {
 			}
 		}
 		return list;
+	}
+	
+	public Card getCardByName(String qname) {
+		if(mDb == null)
+			open();
+		Cursor c = null;
+			c = mDb.query(DATABASE_TABLE, new String [] {
+					KEY_SET,
+					KEY_NAME,
+					KEY_SCAN,
+					KEY_COST,
+					KEY_TYPE,
+					KEY_MECHANICS,
+					KEY_DESCRIPTION
+			}, KEY_NAME + " = ?", new String [] {qname}, null, null, KEY_NAME + " LIMIT 1");
+		Card card = null;
+		if(c != null) {
+			c.moveToFirst();
+			String name = c.getString(c.getColumnIndex(KEY_NAME));
+			String set = c.getString(c.getColumnIndex(KEY_SET));
+			String scan = c.getString(c.getColumnIndex(KEY_SCAN));
+			String cost = c.getString(c.getColumnIndex(KEY_COST));
+			String type = c.getString(c.getColumnIndex(KEY_TYPE));
+			String mechanics = c.getString(c.getColumnIndex(KEY_MECHANICS));
+			String description = c.getString(c.getColumnIndex(KEY_DESCRIPTION));
+			card = new Card(name, set, scan, type, cost, mechanics, description);
+		}
+		return card;
 	}
 	
 }
