@@ -17,6 +17,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -36,12 +37,8 @@ public class SplashActivity extends Activity {
 		return info.getType();
 	}
 
-	void showNoDataAlert() {
-		DialogFragment fragment = new NoDataAlertDialogFragment();
-		fragment.show(getFragmentManager(), "dialog");
-	}
 	void showWarning() {
-		DialogFragment fragment = new WarningDialogFragment();
+		DialogFragment fragment = new NoCardDBDialogFragment();
 		fragment.show(getFragmentManager(), "dialog");
 	}
 	
@@ -49,42 +46,10 @@ public class SplashActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.splash);
         getActionBar().hide();
-        
-        //Set up prefs file, default values if not already set
-        SharedPreferences prefs = getSharedPreferences("p.xml", 0);
-        SharedPreferences.Editor prefsEdit = prefs.edit();
-        //if(!prefs.contains("searchResultLimit"))
-        	prefsEdit.putInt("searchResultLimit", 30);
-
-        if(!prefs.contains("askCardDBDownload"))
-        	prefsEdit.putBoolean("askCardDBDownload", true);
-
-        //if(!prefs.contains("autoDownloadScans"))
-        	prefsEdit.putBoolean("autoDownloadScans", true);
-
-        if(!prefs.contains("realTimeSearch"))
-        	prefsEdit.putBoolean("realTimeSearch", false);
-        
-        prefsEdit.commit();
-    	
-    	Toast.makeText(this, "Checking Card Database", Toast.LENGTH_SHORT).show();
-        boolean needDownload = CardDB.needsInit(this);
-        needDownload = true;
-    	if(needDownload)
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+    	if(prefs.getBoolean("askCardDBDownload", true) && CardDB.needsInit(this))
         {
-        	int network = getNetworkType();
-        	if(network == -1) {
-        		showNoDataAlert();
-        	}
-        	else {
-        		if(prefs.getBoolean("askCardDBDownload", true)) {
-        			showWarning();
-        		}
-        		else {
-					SplashDownloadCardDBDialogFragment d = new SplashDownloadCardDBDialogFragment();
-					d.show(getFragmentManager(), null);
-        		}
-        	}
+        	showWarning();
         } else {
     		Intent i = new Intent(this, MTGCompanionActivity.class);
     		startActivity(i);
@@ -93,36 +58,13 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 	}
 	
-	public class NoDataAlertDialogFragment extends DialogFragment {
-
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			
-			builder.setMessage("No network connection found. A network connection is required to download the card database. You can download the card database later from the settings.");
-			
-			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					
-					public void onClick(DialogInterface dialog, int which) {
-						Intent i = new Intent(getActivity(), MTGCompanionActivity.class);
-						startActivity(i);
-					}
-				});
-			return builder.create();
-		}
-		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-			setCancelable(false);
-		}
-	}
-	
-	public class WarningDialogFragment extends DialogFragment {
+	public class NoCardDBDialogFragment extends DialogFragment {
 		
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			
-			builder.setMessage("No card database found. Would you like to download it now? This can be done later from the settings.");
+			builder.setMessage("No card database found. Would you like to download it now?");
 			
 			builder.setPositiveButton("Download", new DialogInterface.OnClickListener() {
 					

@@ -23,6 +23,11 @@ import android.graphics.BitmapFactory;
 import android.widget.Toast;
 
 public class CardDB {
+	public static final String SEARCHTYPE_CONTAINS = "1";
+	public static final String SEARCHTYPE_BEGINS_WITH = "2";
+	public static final String SEARCHTYPE_ENDS_WITH = "3";
+	public static final String SEARCHTYPE_EXACT_MATCH = "4";
+	
 	public static final String KEY_SET = "set_code";
 	public static final String KEY_NAME = "name";
 	public static final String KEY_SCAN = "scan";
@@ -109,9 +114,23 @@ public class CardDB {
 		mDbHelper.close();
 	}
 	
-	public ArrayList<Card> getCardsByName(String qname, int limit) {
+	public ArrayList<Card> getCardsByName(String qname, int limit, String queryType) {
 		if(mDb == null)
 			open();
+		
+		switch(Integer.valueOf(queryType)) {
+		case 1:
+			qname = "%"+qname+"%";
+			break;
+		case 2:
+			qname = qname+"%";
+			break;
+		case 3:
+			qname = "%"+qname;
+			break;
+		default:
+			break;
+		}
 		Cursor c = null;
 			c = mDb.query(DATABASE_TABLE, new String [] {
 					KEY_SET,
@@ -121,7 +140,7 @@ public class CardDB {
 					KEY_TYPE,
 					KEY_MECHANICS,
 					KEY_DESCRIPTION
-			}, KEY_NAME + " LIKE ?" ,  new String [] {"%"+qname+"%"}, KEY_NAME, null, KEY_NAME + " LIMIT " + String.valueOf(limit));
+			}, KEY_NAME + " LIKE ?" ,  new String [] {qname}, KEY_NAME, null, KEY_NAME + " LIMIT " + String.valueOf(limit));
 		ArrayList<Card> list = new ArrayList<Card>();
 		if(c != null) {
 			c.moveToFirst();
@@ -143,6 +162,7 @@ public class CardDB {
 	public Card getCardByName(String qname) {
 		if(mDb == null)
 			open();
+		
 		Cursor c = null;
 			c = mDb.query(DATABASE_TABLE, new String [] {
 					KEY_SET,

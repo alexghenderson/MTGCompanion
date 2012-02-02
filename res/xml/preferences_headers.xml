@@ -1,0 +1,11 @@
+<preference-headers
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  
+    <header android:fragment="net.ilcid.apps.magiccompanion.SettingsActivity$SearchSettingsFragment"
+        android:title="Search Settings"
+        android:summary="Search related settings"/>
+    <header android:fragment="net.ilcid.apps.magiccompanion.SettingsActivity$DataSettingsFragment"
+        android:title="Data Settings"
+        android:summary="Data usage regulating settings"/>
+    
+</preference-headers>

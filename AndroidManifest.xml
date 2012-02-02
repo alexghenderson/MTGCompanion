@@ -18,6 +18,12 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".SettingsActivity"
+            android:label="@string/settings_activity_title">
+            <intent-filter>
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".CardDetailsActivity"
             android:label="@string/cardsearch_activity_title">
             <intent-filter>

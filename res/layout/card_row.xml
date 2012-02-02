@@ -1,36 +1,36 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="fill_parent"
-android:layout_height="wrap_content"
+android:layout_height="48dp"
 android:orientation="horizontal"
-android:padding="4dip">
+android:padding="4dp">
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
-		android:padding="4dip">
+		android:paddingLeft="12dp"
+		android:paddingRight="12dp">
 		<TextView android:id="@+id/card_name"
+		    style="@android:style/TextAppearance.Holo.SearchResult.Title"
 		    android:layout_width="wrap_content"
 		    android:layout_height="fill_parent"
 		    android:singleLine="true" 
-		    android:textSize="24sp"
 		    android:text="@string/default_value"/>
 		<LinearLayout
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			android:padding="4dip">
+			android:orientation="horizontal">
 			<TextView android:id="@+id/card_type"
+		    	style="@android:style/TextAppearance.Holo.SearchResult.Subtitle"
 			    android:layout_width="wrap_content"
 			    android:layout_height="fill_parent"
-			    android:textSize="14sp"
 			    android:text="@string/default_value"/>
 			<TextView android:id="@+id/card_set"
+		    	style="@android:style/TextAppearance.Holo.SearchResult.Subtitle"
 			    android:layout_width="wrap_content"
 			    android:layout_height="fill_parent"
 			    android:gravity="right"
 			    android:layout_weight="1"
-			    android:textSize="14sp"
 			    android:text="@string/default_value"/>
 		</LinearLayout>
 	</LinearLayout>

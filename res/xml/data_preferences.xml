@@ -1,0 +1,15 @@
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  <CheckBoxPreference
+    android:key="autoDownloadScans"
+    android:title="Download Scans"
+    android:summary="Automatically download card scans"
+    android:defaultValue="true"/>
+  
+  <CheckBoxPreference
+    android:key="askCardDBDownload"
+    android:title="Card Database"
+    android:summary="Check for card database on launch"
+    android:defaultValue="true"/>
+    
+</PreferenceScreen>

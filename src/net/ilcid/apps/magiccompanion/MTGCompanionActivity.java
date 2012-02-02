@@ -70,6 +70,11 @@ public class MTGCompanionActivity extends Activity {
     	case R.id.menu_search:
     		i = new Intent(this, CardSearchActivity.class);
     		startActivity(i);
+    		return true;
+    	case R.id.menu_settings:
+    		i = new Intent(this, SettingsActivity.class);
+    		startActivity(i);
+    		return true;
     	default: 
     		return super.onOptionsItemSelected(item);
     	}

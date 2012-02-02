@@ -81,4 +81,8 @@ public class Card {
 		}
 		return mBitmap;
 	}
+	
+	public boolean scanReady() {
+		return (mBitmap != null);
+	}
 }

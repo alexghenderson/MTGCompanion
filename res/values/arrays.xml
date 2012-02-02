@@ -1,0 +1,14 @@
+<resources>
+    <string-array name="searchTypes">
+        <item>Contains</item>
+        <item>Begins With</item>
+        <item>Ends With</item>
+        <item>Exact Match</item>
+    </string-array>
+    <string-array name="searchTypeValues">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+</resources>

@@ -1,0 +1,18 @@
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+	<CheckBoxPreference android:key="realTimeSearch"
+		android:title="Real Time Search"
+		android:summary="Search card database while typing"
+		android:defaultValue="true"/>
+	<EditTextPreference android:key="searchResultLimit"
+		android:title="Search Result Limit"
+		android:summary="Lower numbers may improve performance"
+		android:inputType="number"
+		android:defaultValue="30"/>
+	<ListPreference android:key="defaultSearchType"
+		android:title="Default Search Type"
+		android:summary="How the card search handles your query"
+		android:defaultValue="contains"
+		android:entries="@array/searchTypes"
+		android:entryValues="@array/searchTypeValues"/>
+</PreferenceScreen>

@@ -6,9 +6,14 @@ import java.util.Observable;
 import java.util.Observer;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +68,14 @@ public class DownloadCardDBDialogFragment extends DialogFragment implements Obse
 		}
 	}
 	
+	private int getNetworkType() {
+		ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo info = cm.getActiveNetworkInfo();
+		
+		if(info == null)
+			return -1;
+		return info.getType();
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
@@ -83,6 +96,13 @@ public class DownloadCardDBDialogFragment extends DialogFragment implements Obse
 	@Override
 	public void onStart() {
 		super.onStart();
+		
+		if(getNetworkType() == -1) {
+			NoConnectionDialogFragment fragment = new NoConnectionDialogFragment();
+			fragment.show(getFragmentManager(), null);
+			dismiss();
+		}
+		
 		setCancelable(false);
 		
 		try {
@@ -99,6 +119,27 @@ public class DownloadCardDBDialogFragment extends DialogFragment implements Obse
 					dismiss();
 				}
 			});
+		}
+	}
+	
+	public class NoConnectionDialogFragment extends DialogFragment {
+
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			
+			builder.setMessage("No network connection found. A network connection is required to download the card database. Please try again later when you have a connection.");
+			
+			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						dismiss();
+					}
+				});
+			return builder.create();
+		}
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
 		}
 	}
 	

@@ -8,7 +8,10 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -18,8 +21,10 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CardSearchFragment extends Fragment {
+	
 	private CardAdapter mAdapter;
 	private CardDB mCardDb;
 	private boolean mBusy;
@@ -34,13 +39,14 @@ public class CardSearchFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-
-        boolean needDownload = CardDB.needsInit(getActivity());
-        needDownload = true;
-    	if(needDownload)
+		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+	
+    	if(CardDB.needsInit(getActivity()))
         {
     		NoCardDBAlertDialogFragment fragment = new NoCardDBAlertDialogFragment();
+    		fragment.show(getFragmentManager(), null);
         }
+    		
 		
 		View v = inflater.inflate(R.layout.card_search_fragment, container, false);
 		final Activity activity = getActivity();
@@ -59,13 +65,13 @@ public class CardSearchFragment extends Fragment {
 		edit.addTextChangedListener(new TextWatcher() {
 			
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if(getActivity().getSharedPreferences("p.xml", 0).getBoolean("realTimeSearch", true)){
+				if(prefs.getBoolean("realTimeSearch", true)){
 					mAdapter.clear();
 					if(!mBusy) {
 						new Thread(new Runnable() {
 							public void run() {
 								mBusy = true;
-								final ArrayList<Card> list = mCardDb.getCardsByName(edit.getText().toString(), getActivity().getSharedPreferences("p.xml", 0).getInt("searchResultLimit", 10));
+								final ArrayList<Card> list = mCardDb.getCardsByName(edit.getText().toString(), Integer.valueOf(prefs.getString("searchResultLimit", "30")), prefs.getString("defaultSearchType", CardDB.SEARCHTYPE_CONTAINS));
 								activity.runOnUiThread(new Runnable() {
 		
 									public void run() {
@@ -124,7 +130,7 @@ public class CardSearchFragment extends Fragment {
 				mAdapter.clear();
 				new Thread(new Runnable() {
 					public void run() {
-						final ArrayList<Card> list = mCardDb.getCardsByName(edit.getText().toString(), getActivity().getSharedPreferences("p.xml", 0).getInt("searchResultLimit", 10));
+						final ArrayList<Card> list = mCardDb.getCardsByName(edit.getText().toString(), Integer.valueOf(prefs.getString("searchResultLimit", "30")), prefs.getString("defaultSearchType", CardDB.SEARCHTYPE_CONTAINS));
 						activity.runOnUiThread(new Runnable() {
 
 							public void run() {
@@ -150,19 +156,26 @@ public class CardSearchFragment extends Fragment {
 	
 
 	public class NoCardDBAlertDialogFragment extends DialogFragment {
-
+		
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			
-			builder.setMessage("No network connection found. A network connection is required to download the card database. You can download the card database later from the settings.");
+			builder.setMessage("No card database found. Download it now?\nNote: The card database is roughly 10MB in size.");
 			
-			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			builder.setPositiveButton("Download", new DialogInterface.OnClickListener() {
 					
 					public void onClick(DialogInterface dialog, int which) {
-						getActivity().finish();
-						
+						DownloadCardDBDialogFragment fragment = new DownloadCardDBDialogFragment();
+			    		fragment.show(getFragmentManager(), null);
 					}
 				});
+			builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					getActivity().finish();
+					
+				}
+			});
 			builder.setCancelable(false);
 			return builder.create();
 		}
